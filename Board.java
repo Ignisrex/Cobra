@@ -1,4 +1,4 @@
-package Board;
+package SC;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,10 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.sound;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 
 public class Board extends JPanel implements ActionListener {
 	private final int B_WIDTH =300; // board width
@@ -63,12 +65,20 @@ public class Board extends JPanel implements ActionListener {
 		ImageIcon  iia = new ImageIcon ("apple.png");
 		apple = iia.getImage();
 
-		ImageIcon iia = new  ImageIcon ("head.png");
+		ImageIcon iia = new  ImageIcon ("snakehead.png");
 		head = iih.getImage();
 
 
 	
 
+	}
+
+	private void playSound(String soundFile){
+		File f =new File("./"+ soundFile);
+		audioIn = AudioSystem.getAudioInputStream(f.toURL().toURL());
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioIn);
+		clip.start();
 	}
 	
 
@@ -132,6 +142,8 @@ public class Board extends JPanel implements ActionListener {
 
 	 	if ((x[0] == apple_x) && (y[0] == apple_y)){
 	 		dots++;
+	 		playSound("eat.wav");
+
 	 		locateApple();
 
 	 	}
