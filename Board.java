@@ -1,4 +1,4 @@
-package SC;
+package SC; //board
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.sound;
+import javax.sound.sampled;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -51,7 +51,7 @@ public class Board extends JPanel implements ActionListener {
 
 		setPreferredSize(new Dimension(B_WIDTH, B_HIEGHT));
 		loadImages();
-		initGame;
+		initGame();
 
 
 	}
@@ -65,7 +65,7 @@ public class Board extends JPanel implements ActionListener {
 		ImageIcon  iia = new ImageIcon ("apple.png");
 		apple = iia.getImage();
 
-		ImageIcon iia = new  ImageIcon ("snakehead.png");
+		ImageIcon iih = new  ImageIcon ("snakehead.png");
 		head = iih.getImage();
 
 
