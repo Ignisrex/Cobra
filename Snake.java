@@ -1,4 +1,4 @@
-package SC;
+package Cobra;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -10,7 +10,7 @@ public class Snake extends JFrame {
 		setResizable(false);
 		pack();
 
-		seTitle("Snake");
+		setTitle("Snake");
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,6 +22,8 @@ public class Snake extends JFrame {
 			@Override
 			public void run (){
 				JFrame ex  =  new Snake();
+				ex.setVisible(true);
+				
 
 			}
 		});

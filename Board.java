@@ -1,4 +1,4 @@
-package SC; //board
+package Cobra; //board
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +11,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.sound.sampled;
+import java.io.File;
+
+
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -20,8 +29,9 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 	private final int B_WIDTH =300; // board width
-	private final int B_HEIGHT = 300; //board hieght
-	private final int DOT_SIZE = 10; // maximum dots on screen
+	private final int B_HEIGHT = 300; //board height
+	private final int DOT_SIZE = 10; 
+	private final int ALL_DOTS = 900;
 	private final int RAND_POS = 29; // Used to generate random position for apple 
 	private final int DELAY = 140;//determines games pace
 
@@ -45,11 +55,11 @@ public class Board extends JPanel implements ActionListener {
 
 	public Board(){
 
-		addKeyListner(new TAdapter());
-		setBackGround(Color.black);
+		addKeyListener(new TAdapter());
+		setBackground(Color.black);
 		setFocusable(true);
 
-		setPreferredSize(new Dimension(B_WIDTH, B_HIEGHT));
+		setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 		loadImages();
 		initGame();
 
@@ -73,12 +83,18 @@ public class Board extends JPanel implements ActionListener {
 
 	}
 
-	private void playSound(String soundFile){
-		File f =new File("./"+ soundFile);
-		audioIn = AudioSystem.getAudioInputStream(f.toURL().toURL());
-		Clip clip = AudioSystem.getClip();
-		clip.open(audioIn);
-		clip.start();
+	
+	public void playSound(String soundFile) {
+	try{
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFile).getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	} catch(Exception ex){
+		 System.out.println("Error with playing sound.");
+	     ex.printStackTrace();
+	}
+	   
 	}
 	
 
@@ -92,29 +108,29 @@ public class Board extends JPanel implements ActionListener {
 
 
 		}
-		locate Apple();
+		locateApple();
 
-		timer = new Timer(Delay, this);
+		timer = new Timer(DELAY, this);
 		timer.start();
 
 	}
 
 	@Override
-	public void paintComment(Graphics g){
-		super.paintCompanent(g);
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
 		 doDrawing(g);
 
 
 	}
 
-	private void doDrawing (Graohics g){
+	private void doDrawing (Graphics g){
 
 		if  (inGame){
-			g.drawimage(apple, apple_x, apple_y, this);
+			g.drawImage(apple, apple_x, apple_y, this);
 
-			for (int z =0, z < dots; z++){
+			for (int z =0; z < dots; z++){
 				if(z == 0){
-					g.drawImage(head,  x[z]. y[z], this);
+					g.drawImage(head,  x[z], y[z], this);
 
 				}else{
 					g.drawImage(ball, x[z], y[z], this);
@@ -127,14 +143,14 @@ public class Board extends JPanel implements ActionListener {
 			gameOver(g);
 		}
 	}
-	 private void gameOver(Graphics g0){
+	 private void gameOver(Graphics g){
 	 	String msg = "Game Over :(";
 	 	Font small = new Font("Serif", Font.BOLD, 14);
 
-	 	FontMetrics metr = get FontMetrics(small);
+	 	FontMetrics metr = getFontMetrics(small);
 	 	g.setColor(Color.white);
 	 	g.setFont(small);
-	 	g.draString(msg, (B_WIDTH -  metr.stringWidth(msg))/ 2, B_HEIGHT / 2);
+	 	g.drawString(msg, (B_WIDTH -  metr.stringWidth(msg))/ 2, B_HEIGHT / 2);
 
 	 }
 
@@ -142,7 +158,7 @@ public class Board extends JPanel implements ActionListener {
 
 	 	if ((x[0] == apple_x) && (y[0] == apple_y)){
 	 		dots++;
-	 		playSound("eat.wav");
+	 		playSound("C:/User/keane/Cobra/eat.wav");
 
 	 		locateApple();
 
@@ -207,13 +223,13 @@ public class Board extends JPanel implements ActionListener {
 	 }
 
 	 private void locateApple(){
-	 	int r = (math (Math.random() * RAND_POS));
+	 	int r = (int) (Math.random() * RAND_POS);
 
 	 	apple_x = (r * DOT_SIZE);
 
-	 	r = (math (Math.random() * RAND_POS));
+	 	r = (int) (Math.random() * RAND_POS);
 
-	 	apple_xy= (r * DOT_SIZE);
+	 	apple_y= (r * DOT_SIZE);
 	 }
 
 	 @Override
@@ -226,7 +242,7 @@ public class Board extends JPanel implements ActionListener {
 	 	repaint();
 	 }
 
-	 ptivate class TAdapter extends KeyAdapter{
+	 private class TAdapter extends KeyAdapter{
 	 	@Override
 	 	public void keyPressed(KeyEvent e){
 	 		int key = e.getKeyCode();
@@ -243,7 +259,7 @@ public class Board extends JPanel implements ActionListener {
 	 			downDirection = false;
 	 		}
 
-	 		if ((key == KeyEvent.VK_UP) & &  (!downDirection)){
+	 		if ((key == KeyEvent.VK_UP) &&  (!downDirection)){
 	 			upDirection =true ;
 	 			rightDirection = false;
 	 			leftDirection = false;
